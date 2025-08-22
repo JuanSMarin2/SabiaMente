@@ -14,7 +14,7 @@ export default function App() {
           className="logo"
           draggable="false"
         />
-        <h1 className="title"></h1>
+        <h1 className="title">SabiaMente</h1>
         <p className="subtitle">
           Entrena tu mente
           <br />
