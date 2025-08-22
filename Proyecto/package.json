@@ -1,7 +1,0 @@
-{
-  "homepage": "https://github.com/JuanSMarin2/SabiaMente.git",
-  "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
-  }
-}
