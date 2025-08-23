@@ -1,4 +1,3 @@
-/* Tipografía base y fijar alto completo en móviles */
 :root {
   --primary: #1f3a8a;     /* azul profundo */
   --primary-press: #172c6a;
@@ -10,6 +9,7 @@
 
 * { box-sizing: border-box; }
 html, body, #root { height: 100%; }
+
 body {
   margin: 0;
   background: var(--bg);
@@ -28,10 +28,10 @@ body {
   position: relative;
 }
 
-/* Tarjeta principal para darle aire y consistencia en móviles estrechos */
+/* Tarjeta principal */
 .card {
   width: 100%;
-  max-width: 360px;             /* tamaño "mobile" */
+  max-width: 360px; /* tamaño mobile */
   margin: 0 auto;
   text-align: center;
 }
@@ -92,7 +92,7 @@ body {
   display: grid;
   place-items: center;
   text-decoration: none;
-  background: #10b981;        /* verde suave para info/help */
+  background: #10b981;
   color: #053422;
   font-weight: 800;
   font-size: 18px;
@@ -102,7 +102,7 @@ body {
 
 .fab:active { transform: translateY(1px); }
 
-/* Pequeñas mejoras para pantallas altas */
+/* Responsive */
 @media (min-height: 700px) {
   .logo { width: 180px; }
   .title { font-size: 30px; }

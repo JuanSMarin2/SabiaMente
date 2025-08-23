@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Iniciar sesión — SabiaMente</title>
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <link rel="stylesheet" href="/styles/ui.css" />
+   <link rel="stylesheet" href="styles/ui.css" />
+
   </head>
   <body>
     <div class="page">
@@ -20,7 +21,7 @@
           <input class="input" id="password" name="password" type="password" placeholder="Contraseña" required />
 
           <p class="helper">
-            <a class="link" href="/recoverAccount.html">¿Olvidaste la contraseña?</a>
+            <a class="link" href="recoverAccount.html">¿Olvidaste la contraseña?</a>
           </p>
 
           <button class="btn primary" type="submit">Continuar</button>
@@ -28,7 +29,7 @@
 
         <button class="btn outline" id="guestBtn">Ingresar sin cuenta</button>
 
-        <a class="btn ghost" href="/createAccount.html">¿No tienes cuenta?</a>
+        <a class="btn ghost" href="createAccount.html">¿No tienes cuenta?</a>
       </main>
     </div>
 
@@ -37,12 +38,12 @@
       document.getElementById("loginForm").addEventListener("submit", (e) => {
         e.preventDefault();
         // Aquí podrías validar credenciales antes de redirigir
-        window.location.href = "/mainMenu.html";
+        window.location.href = "mainMenu.html";
       });
 
       // Ingresar sin cuenta
       document.getElementById("guestBtn").addEventListener("click", () => {
-        window.location.href = "/mainMenu.html";
+        window.location.href = "mainMenu.html";
       });
     </script>
   </body>
