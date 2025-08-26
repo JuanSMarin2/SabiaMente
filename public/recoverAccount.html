@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recuperar cuenta — SabiaMente</title>
+  <link rel="icon" type="image/svg+xml" href="vite.svg" />
+  <link rel="stylesheet" href="styles/ui.css" />
+  <style>
+    .subtitle { color: var(--muted); text-align:center; margin: 0 0 18px; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <main class="card narrow">
+      <h1 class="title center">Recuperar cuenta</h1>
+      <p class="subtitle">Por favor ingrese los siguientes datos</p>
+
+      <form id="recoverForm" class="form" novalidate>
+        <label class="label" for="username">Nombre de usuario*</label>
+        <input class="input" id="username" name="username" type="text" placeholder="Nombre" required />
+
+        <label class="label" for="contact">Correo o núm de telefono*</label>
+        <input class="input" id="contact" name="contact" type="text" placeholder="Email o número" required />
+
+        <button class="btn primary" type="submit">Continuar</button>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    const form = document.getElementById("recoverForm");
+
+    function maskEmail(email) {
+      const [user, domain] = email.split("@");
+      if (!domain) return email;
+      const first = user[0] || "";
+      return `${first}${"*".repeat(Math.max(1, user.length-1))}@${domain}`;
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const username = document.getElementById("username").value.trim();
+      const contact  = document.getElementById("contact").value.trim();
+
+      if (!username || !contact) return;
+
+      // Guardar para mostrar en la siguiente pantalla
+      try {
+        localStorage.setItem("recover_user", username);
+        localStorage.setItem("recover_contact", contact);
+        // Precalcular versión enmascarada si es correo
+        const masked = contact.includes("@") ? maskEmail(contact) : contact.replace(/\d(?=\d{4})/g, "*");
+        localStorage.setItem("recover_masked", masked);
+      } catch (_) {}
+
+      // Ir a verificación de código
+      window.location.href = "verifyCode.html";
+    });
+  </script>
+</body>
+</html>

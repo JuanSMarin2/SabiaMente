@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Acerca de — SabiaMente</title>
+    <link rel="icon" type="image/svg+xml" href="vite.svg" />
+    <link rel="stylesheet" href="styles/ui.css" />
+    <style>
+      .about-card {
+        max-width: 360px;
+        margin: 0 auto;
+        padding: 24px 18px;
+        text-align: center;
+      }
+      .about-card h1 {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 18px;
+      }
+      .about-card p {
+        font-size: 16px;
+        line-height: 1.5;
+        margin-bottom: 32px;
+        color: var(--text);
+      }
+      .about-icon {
+        margin-bottom: 8px;
+      }
+      .about-icon img {
+        width: 56px;
+        height: auto;
+        user-select: none;
+      }
+      .about-version {
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+      .fab-back {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        width: 48px;
+        height: 48px;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        text-decoration: none;
+        background: #7c3aed; /* morado */
+        color: #fff;
+        font-size: 22px;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <main class="about-card">
+        <h1>¿Qué es SabiaMente?</h1>
+        <p>
+          SabiaMente es una aplicación pensada especialmente para ayudarte a mantener
+          tu mente activa y saludable, a través de juegos sencillos, consejos útiles
+          y hábitos que mejoran tu calidad de vida.
+        </p>
+
+        <div class="about-icon">
+          <img src="img/version.png" alt="Versión de la App" />
+        </div>
+        <div class="about-version">Versión de la App</div>
+        <div>V0.1.0</div>
+      </main>
+    </div>
+
+    <!-- Botón flotante de regreso -->
+    <!-- cambia el href según adónde quieras volver -->
+    <a href="index.html" class="fab-back" aria-label="Volver">
+      ←
+    </a>
+  </body>
+</html>
