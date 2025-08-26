@@ -1,12 +1,11 @@
-# React + Vite
+# SabiaMente
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+El envejecimiento trae consigo una serie de cambios en el funcionamiento del cuerpo y la mente. Uno de los más comunes y preocupantes es el deterioro cognitivo, que afecta la memoria, la atención, el lenguaje y la capacidad para resolver problemas. 
 
-Currently, two official plugins are available:
+Más de 55 millones de personas viven con demencia, y cada año se suman unos 10 millones de casos nuevos.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Aunque no todos los adultos mayores desarrollan demencia, muchos experimentan un deterioro cognitivo leve (DCL) que puede impactar su calidad de vida, autonomía y bienestar emocional.
+SabiaMente es una aplicación pensada especialmente para ayudarte a mantener tu mente activa y saludable, a través de juegos sencillos, consejos útiles y hábitos que mejoran tu calidad de vida.
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+<img width="360" height="312" alt="image" src="https://github.com/user-attachments/assets/e7c3b624-2c83-4b14-bca3-ec700f9b4bf6" />
