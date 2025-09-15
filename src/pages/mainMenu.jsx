@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header.jsx";
+import { useStore } from "../store"; // Añadir esta importación
 
 export default function MainMenu() {
   const img = (p) => import.meta.env.BASE_URL + "img/" + p;
+  const { getUserName, streak, points } = useStore(); // Usar el store
 
   return (
     <div className="page">
@@ -11,7 +13,7 @@ export default function MainMenu() {
 
       <main className="mm-card">
         <section className="mm-hello">
-          <h2>Hola, [nombre]</h2>
+          <h2>Hola, {getUserName()}</h2> {/* Usar el nombre del store */}
           <p>¿Qué harás hoy?</p>
         </section>
 
@@ -20,11 +22,11 @@ export default function MainMenu() {
           <div className="mm-metrics">
             <div className="mm-row">
               <img src={img("streakIcon.png")} alt=""/>
-              <div className="mm-num">Racha 3 días</div>
+              <div className="mm-num">Racha {streak} días</div> {/* Usar del store */}
             </div>
             <div className="mm-row">
               <img src={img("starIcon.png")} alt=""/>
-              <div className="mm-num">250 puntos</div>
+              <div className="mm-num">{points} puntos</div> {/* Usar del store */}
             </div>
           </div>
         </section>
