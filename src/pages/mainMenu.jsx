@@ -1,9 +1,9 @@
-// src/pages/MainMenu.jsx
 import React from "react";
+import { Link } from "react-router-dom";
 import Header from "../components/Header.jsx";
 
 export default function MainMenu() {
-  const base = import.meta.env.BASE_URL;
+  const img = (p) => import.meta.env.BASE_URL + "img/" + p;
 
   return (
     <div className="page">
@@ -16,28 +16,28 @@ export default function MainMenu() {
         </section>
 
         <section className="mm-profile">
-          <img className="mm-avatar" src={base + "img/person.png"} alt="Foto de perfil" />
+          <img className="mm-avatar" src={img("person.png")} alt="" />
           <div className="mm-metrics">
             <div className="mm-row">
-              <img src={base + "img/streakIcon.png"} alt="Racha" />
+              <img src={img("streakIcon.png")} alt=""/>
               <div className="mm-num">Racha 3 días</div>
             </div>
             <div className="mm-row">
-              <img src={base + "img/starIcon.png"} alt="Puntos" />
+              <img src={img("starIcon.png")} alt=""/>
               <div className="mm-num">250 puntos</div>
             </div>
           </div>
         </section>
 
         <section className="mm-actions">
-          <a className="mm-btn mm-btn--play" href={base + "game.html"}>
+          <Link className="mm-btn mm-btn--play" to="/game">
             <div className="mm-ico">♪</div>
             <span>Jugar</span>
-          </a>
-          <a className="mm-btn mm-btn--tips" href={base + "advice.html"}>
+          </Link>
+          <Link className="mm-btn mm-btn--tips" to="/advice">
             <div className="mm-ico">i</div>
             <span>Consejos</span>
-          </a>
+          </Link>
         </section>
       </main>
     </div>
