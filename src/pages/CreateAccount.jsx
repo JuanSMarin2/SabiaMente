@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function CreateAccount(){
   const nav = useNavigate();
@@ -7,6 +8,7 @@ export default function CreateAccount(){
   const handleSubmit = (e) => {
     e.preventDefault();
     // TODO: validate and persist the new account data
+    toast.success("Cuenta creada con éxito");
     nav("/verify");
   };
 

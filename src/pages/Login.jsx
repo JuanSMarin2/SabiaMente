@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useStore } from "../store";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const nav = useNavigate();
@@ -12,12 +13,15 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (formData.username && formData.password) {
+ if (formData.username && formData.password) {
       login({ 
         name: formData.username, 
         email: `${formData.username}@example.com` 
       });
+    toast.success("Inicio de sesión exitoso ✅");
       nav("/main");
+    } else {
+      toast.error("Usuario y contraseña son requeridos ❌");
     }
   };
 
@@ -31,6 +35,7 @@ export default function Login() {
 
   const handleGuestLogin = () => {
     login({ name: "Invitado", isGuest: true });
+    toast("Ingresaste como invitado 👤");
     nav("/main");
   };
 

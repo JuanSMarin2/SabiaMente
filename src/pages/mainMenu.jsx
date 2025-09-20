@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header.jsx";
-import { useStore } from "../store"; // Añadir esta importación
+import { useStore } from "../store.js"; // Añadir esta importación
 
 export default function MainMenu() {
   const img = (p) => import.meta.env.BASE_URL + "img/" + p;
