@@ -6,8 +6,8 @@ export const useStore = create((set, get) => ({
   user: null,
   isAuthenticated: false,
   theme: 'light',
-  streak: 3,
-  points: 250,
+  streak: 0,
+  points: 0,
   
   // Actions
   login: (userData) => set({ 

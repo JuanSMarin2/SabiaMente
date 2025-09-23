@@ -1,3 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 :root {
   --primary: #1f3a8a;     /* azul profundo */
   --primary-press: #172c6a;
@@ -620,3 +625,15 @@ body{ background:var(--bg); color:var(--text); }
   position: relative;
   min-height: 100vh;
 }
+.adv-card { width:100%; max-width:360px; margin:0 auto; text-align:center; }
+.adv-title { font-size:28px; margin:12px 0 6px; font-weight:800; }
+.adv-sub { margin:0 0 18px; font-size:20px; }
+.adv-row { display:flex; align-items:center; justify-content:center; gap:18px; margin:16px 0 20px; }
+.adv-badge {
+  width:84px; height:84px; border-radius:999px; display:grid; place-items:center;
+  background:#0f8a2a; color:#fff; font-size:38px; font-weight:800;
+  box-shadow:0 10px 18px rgba(2,6,23,.12);
+}
+.adv-badge.adv-green { border:3px solid #16a34a; }
+.adv-arrow { font-size:42px; color:#0ea5b7; }
+.adv-btn { margin-top:10px; max-width:240px; }
