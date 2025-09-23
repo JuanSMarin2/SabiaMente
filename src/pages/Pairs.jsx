@@ -100,7 +100,7 @@ export default function Pairs() {
             <span className="text-2xl font-bold tabular-nums">{mmss(timeLeft)}</span>
           </div>
         </div>
-      </div>
+      </div> 
 
       {/* TABLERO 3x4 con más separación */}
       <div className="w-full max-w-[380px] px-5 pb-8">
