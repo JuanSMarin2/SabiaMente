@@ -17,7 +17,7 @@ html, body, #root { height: 100%; }
 
 body {
   margin: 0;
-  background: var(--bg);
+html, body, #root { height: 100vh; overflow: auto; /* permitir scroll global cuando haga falta */ }
   color: var(--text);
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -324,7 +324,30 @@ body {
 }
 
 /* Empuja el contenido para no quedar debajo del header */
+/* Empuja el contenido para no quedar debajo del header */
 body { padding-top: var(--appbar-h); }
+
+/* En páginas donde no queremos la banda superior oscura (p.ej. Pairs) */
+body.no-global-appbar-gap { padding-top: 0 !important; }
+
+/* Ajustes específicos cuando Pairs quita el padding global: */
+body.no-global-appbar-gap .app-content {
+  padding-top: 0 !important;
+  height: 100vh; /* usar todo el viewport dentro del main */
+}
+
+/* Cuando el padding global está desactivado, la separación para el tablero
+   debe contar sólo con el offset local del appbar (8px) + su altura (56px).
+   Evita que el tablero se empuje demasiado hacia abajo y se recorte. */
+body.no-global-appbar-gap .pairs-board {
+  padding-top: calc(8px + 56px);
+}
+
+/* Evitar que .page centre verticalmente cuando estamos en Pairs (quita clipping) */
+body.no-global-appbar-gap .page {
+  display: block;
+  min-height: 100vh;
+}
 
 @media (max-width:420px){
   :root { --appbar-h: 68px; } /* ajustar si hace falta en phones pequeños */
@@ -609,6 +632,17 @@ body{ background:var(--bg); color:var(--text); }
   margin: 0 auto;
 }
 
+/* En pantallas más grandes queremos que el header ocupe todo el ancho */
+@media (min-width: 720px) {
+  .sb-header {
+    max-width: none;    /* permitir que crezca a todo el ancho */
+    width: 100%;
+    margin: 0;          /* quitar centrado tipo tarjeta */
+    border-radius: 0;   /* flush con los bordes */
+    padding: 12px 24px; /* más espacio horizontal en pantallas grandes */
+  }
+}
+
 :root[data-theme="light"] .react-hot-toast {
   --toast-background: #fff;
 }
@@ -619,11 +653,29 @@ body{ background:var(--bg); color:var(--text); }
 .app-content {
   width: 100%;
   padding-top: var(--appbar-h, 72px);
+  /* ocupar el alto restante; permitir scroll cuando haga falta */
+  height: calc(100vh - var(--appbar-h, 72px));
+  overflow: auto; /* permitir scroll interno en páginas con contenido mayor */
 }
+/* El appbar propio del juego debe ocupar el mismo ancho que el tablero */
+.pairs-appbar { width: min(96vw, 680px); }
+
+/* Cada carta mantiene 3:4 y se adapta al ancho de la celda */
+.pair-card { aspect-ratio: 3 / 4; }
+
+/* El tablero deja espacio bajo el appbar fijo (header global + appbar local) */
+.pairs-board { padding-top: calc(var(--appbar-h, 72px) + 8px + 56px); }
+
 
 .page {
   position: relative;
-  min-height: 100vh;
+  /* usar todo el alto disponible dentro de .app-content */
+  min-height: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 .adv-card { width:100%; max-width:360px; margin:0 auto; text-align:center; }
 .adv-title { font-size:28px; margin:12px 0 6px; font-weight:800; }
@@ -637,3 +689,124 @@ body{ background:var(--bg); color:var(--text); }
 .adv-badge.adv-green { border:3px solid #16a34a; }
 .adv-arrow { font-size:42px; color:#0ea5b7; }
 .adv-btn { margin-top:10px; max-width:240px; }
+
+/* ===== Global: evitar scroll y hacer elementos responsivos ===== */
+/* Evitar scroll en toda la app; los elementos deben adaptarse al viewport */
+html, body, #root {
+  height: 100vh;
+  overflow: hidden; /* impide scroll global */
+}
+
+/* Hacer que los cards y contenedores reduzcan su ancho usando vw */
+.card, .mm-card, .adv-card {
+  width: 100%;
+  max-width: min(90vw, 360px);
+  margin: 0 auto;
+}
+
+/* Asegurar imágenes y avatares sean fluidos */
+img, .mm-avatar, .logo, .sb-logo {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Titulares escalables para evitar desbordes en pantallas pequeñas */
+.title, .sb-title, .mm-hello h2, .adv-title {
+  font-size: clamp(16px, 3.6vw, 30px);
+}
+
+/* Texto secundario escalable */
+.subtitle, .mm-hello p, .adv-sub {
+  font-size: clamp(13px, 2.6vw, 20px);
+}
+
+/* Si un contenedor necesita scroll interno (raro), limitarlo explícitamente */
+.scrollable-inner {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mantener el header fijo y asegurarse que no genere scroll adicional */
+.sb-appbar { z-index: 1000; }
+
+/* Ajustes adicionales: reducir padding general en pantallas muy pequeñas */
+@media (max-height: 520px), (max-width: 360px) {
+  .sb-header { padding: 8px 12px; }
+  .page { padding: 8px; }
+}
+
+/* Reglas para el minijuego Pairs: evitar cartas aplastadas */
+.pair-card {
+  /* Forzar relación de aspecto 3:4. Usa aspect-ratio donde esté disponible */
+  aspect-ratio: 3 / 4;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem; /* pequeño padding interior */
+  box-sizing: border-box;
+}
+
+.pairs-emoji {
+  /* Ajusta el tamaño del emoji en función del tamaño de la carta sin exceder */
+  font-size: clamp(32px, 6vmin, 84px);
+  line-height: 1;
+  display: inline-block;
+}
+
+/* Si el contenedor del tablero está limitado verticalmente, hacer que las celdas mantengan proporción */
+.pairs-grid {
+  /* Asegurar que las filas tengan altura y las cartas no se apilen */
+  grid-auto-rows: auto;
+  /* Por defecto, 3 columnas (ideal para móvil) */
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* En pantallas pequeñas asegurar gap más pequeño para evitar overflow */
+@media (max-width: 420px) {
+  .pairs-grid { gap: 12px; }
+}
+
+/* Breakpoints para ajustar número de columnas y tamaño de cartas */
+@media (min-width: 720px) {
+  .pairs-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .pair-card { aspect-ratio: 4 / 5; }
+}
+
+@media (min-width: 1100px) {
+  /* Keep 4 columns even on very wide screens to match design */
+  .pairs-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .pair-card { aspect-ratio: 4 / 5; }
+}
+
+/* Limitar tamaño máximo del tablero para pantallas muy grandes y centrarlo */
+.pairs-board { max-width: 900px; }
+
+/* Asegurar 4 columnas ya a partir de 720px (por si el tailwind breakpoint md es 768px) */
+@media (min-width: 720px) {
+  .pairs-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Pairs appbar (sticky) --------------------------------------------------
+   Use sticky so the appbar is in-flow and pushes the board down instead of
+   overlaying the top row of cards. This keeps the layout consistent across
+   viewports and prevents the appbar from covering content. */
+.pairs-appbar {
+  position: sticky;
+  top: calc(var(--appbar-h, 72px) + 8px);
+  z-index: 1200;
+  width: min(92vw, 380px);
+  margin: 8px auto;
+  pointer-events: none; /* wrapper doesn't capture clicks; inner card does */
+}
+.pairs-appbar > div {
+  pointer-events: auto;
+  height: 56px;
+  display: flex;
+  align-items: center;
+}
+
+/* The board keeps a small margin-top (the sticky appbar occupies layout
+   space) and a max-width for large screens. */
+.pairs-board { margin-top: 6px; max-width: 900px; }

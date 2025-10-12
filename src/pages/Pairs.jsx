@@ -44,6 +44,13 @@ export default function Pairs() {
   };
   useEffect(() => { resetGame(); }, []);
 
+  // Remove the global appbar padding while we're on this route so our local
+  // game appbar can align flush with the top without double spacing.
+  useEffect(() => {
+    document.body.classList.add("no-global-appbar-gap");
+    return () => document.body.classList.remove("no-global-appbar-gap");
+  }, []);
+
   // Timer
   useEffect(() => {
     if (timeLeft <= 0) return;
@@ -83,9 +90,9 @@ export default function Pairs() {
   };
 
   return (
-  <div className="min-h-dvh w-full flex flex-col items-center bg-[#f5f7fb] text-slate-900 dark:bg-[#181f2e] dark:text-slate-100">
-      {/* APP BAR propia (sin Header/Layout) */}
-      <div className="w-full max-w-[380px] sticky top-0 z-10">
+    <div className="min-h-dvh w-full flex flex-col items-center bg-[#f5f7fb] text-slate-900 dark:bg-[#181f2e] dark:text-slate-100">
+      {/* APP BAR propia (usa la clase pairs-appbar definida en styles.css) */}
+      <div className="pairs-appbar">
         <div className="m-3 rounded-2xl border border-black/10 shadow-[0_6px_16px_rgba(2,6,23,0.12)] bg-white px-3 py-2 flex items-center justify-between">
           <button
             onClick={() => navigate(-1)}
@@ -100,11 +107,11 @@ export default function Pairs() {
             <span className="text-2xl font-bold tabular-nums">{mmss(timeLeft)}</span>
           </div>
         </div>
-      </div> 
+      </div>
 
       {/* TABLERO 3x4 con más separación */}
-      <div className="w-full max-w-[380px] px-5 pb-8">
-        <div className="grid grid-cols-3 gap-6 mt-1">
+      <div className="pairs-board w-full max-w-[380px] px-5 pb-8">
+        <div className="pairs-grid grid grid-cols-3 md:grid-cols-4 gap-6 mt-1">
           {deck.map((card, idx) => {
             const opened = flipped.includes(idx) || matched.has(idx);
             const blocked = opened || locked || timeLeft === 0;
@@ -113,7 +120,7 @@ export default function Pairs() {
                 key={card.id}
                 onClick={() => onFlip(idx)}
                 className={[
-                  "aspect-[3/4] rounded-[18px] border shadow-lg",
+                  "pair-card rounded-[18px] border shadow-lg",
                   "transition-transform active:translate-y-px select-none",
                   "flex items-center justify-center will-change-transform",
                   opened
@@ -124,7 +131,7 @@ export default function Pairs() {
                 aria-label={opened ? card.value : "Carta tapada"}
               >
                 {opened && (
-                  <span className="leading-none text-[72px] md:text-[84px] drop-shadow-none filter-none">
+                  <span className="pairs-emoji drop-shadow-none filter-none">
                     {card.value}
                   </span>
                 )}
@@ -134,7 +141,6 @@ export default function Pairs() {
         </div>
 
         {/* Acciones inferiores */}
-      
 
         <p className="mt-4 text-center text-sm text-slate-600">
           Pares resueltos: <b>{matched.size / 2}</b> / {totalPairs} · Movs: <b>{moves}</b>
