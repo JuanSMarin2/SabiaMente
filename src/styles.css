@@ -809,4 +809,5 @@ img, .mm-avatar, .logo, .sb-logo {
 
 /* The board keeps a small margin-top (the sticky appbar occupies layout
    space) and a max-width for large screens. */
-.pairs-board { margin-top: 6px; max-width: 900px; }
+.pairs-board { margin-top: 6px; max-width: 900px; } 
+ 
