@@ -369,6 +369,16 @@ body.no-global-appbar-gap .page {
 }
 .sb-user-icon{ width:26px; height:26px; }
 
+/* Active highlights for header areas (Home -> brand, MainMenu -> user) */
+.sb-brand.active,
+.sb-user.active {
+  background: var(--header-bg);
+  border-radius: 12px;
+  padding: 6px 10px;
+  box-shadow: var(--header-shadow);
+}
+.sb-brand.active .sb-logo { width: 44px; }
+
 /* Alto del header para crear espacio debajo (header + márgenes) */
 .sb-header-spacer{ height: 76px; }  /* ajusta si ves solape */
 
