@@ -22,7 +22,7 @@ export default function Header() {
   const isHomeActive = path === "/" || path.startsWith("/home");
 
   return (
-    <div className="sb-appbar">
+    <div className="sb-appbar"> 
       <header className="sb-header">
         <Link className={"sb-brand" + (isHomeActive ? " active" : "")} to="/settings" aria-label="Ir al menú principal">
           <img className="sb-logo" src={baseImg("logo.png")} alt="SabiaMente" />
