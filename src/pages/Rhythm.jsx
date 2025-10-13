@@ -63,7 +63,7 @@ export default function Rhythm() {
       return next;
     });
   }; 
-
+ 
   const playSequence = async (seq) => {
     setLocked(true);
     setPlaying(true);
