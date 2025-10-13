@@ -62,7 +62,7 @@ export default function Rhythm() {
       playSequence(next);
       return next;
     });
-  };
+  }; 
 
   const playSequence = async (seq) => {
     setLocked(true);
