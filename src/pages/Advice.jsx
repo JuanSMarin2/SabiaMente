@@ -13,11 +13,13 @@ export default function Advice(){
         <h2 className="adv-title">Consejos</h2>
 
         <div className="advice-grid">
-          <div className="advice-card">
-            <img src={base + "advice1.png"} alt="Consejo 1" />
-          </div>
-          <div className="advice-card">
-            <img src={base + "advice2.png"} alt="Consejo 2" />
+          <div className="advice-grid-inner">
+            <div className="advice-card">
+              <img src={base + "advice1.png"} alt="Consejo 1" />
+            </div>
+            <div className="advice-card">
+              <img src={base + "advice2.png"} alt="Consejo 2" />
+            </div>
           </div>
         </div>
 

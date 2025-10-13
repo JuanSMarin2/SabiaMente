@@ -702,11 +702,23 @@ body{ background:var(--bg); color:var(--text); }
 /* Advice page styles (cards + video) -------------------------------------- */
 .adv-advice { max-width: 880px; margin: 12px auto; padding: 20px; }
 .advice-grid {
+  /* Span the full viewport like the video container so the inner column
+     can align with the video edges. */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: 0;
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+  margin-bottom: 18px;
+}
+.advice-grid-inner {
+  width: min(84vw, 560px); /* match video width */
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr 1fr;
   gap: 18px;
-  justify-items: center;
-  margin: 8px 0 18px;
+  align-items: start;
+  justify-items: start; /* left-align items inside each cell */
 }
 .advice-card {
   width: min(42vw, 220px);
@@ -720,9 +732,20 @@ body{ background:var(--bg); color:var(--text); }
 }
 .advice-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-.advice-video { width: min(84vw, 560px); margin: 8px auto 18px; }
+.advice-video {
+  /* Make the container span the viewport so we can center the video
+     horizontally relative to the screen, even if the page content is
+     constrained in a centered column. */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: 0;
+  margin-top: 8px;
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: center;
+}
 .advice-video video {
-  width: 100%;
+  width: min(84vw, 560px);
   height: auto;
   display: block;
   border: 2px solid #ddd;
