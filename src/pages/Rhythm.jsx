@@ -66,7 +66,7 @@ export default function Rhythm() {
  
   const playSequence = async (seq) => {
     setLocked(true);
-    setPlaying(true);
+    setPlaying(true); 
     for (let i = 0; i < seq.length; i++) {
       const id = seq[i];
       setHighlight(id);
