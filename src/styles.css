@@ -793,6 +793,21 @@ body{ background:var(--bg); color:var(--text); }
   .advice-card { width: min(44vw, 150px); }
 }
 
+/* Rhythm minigame styles */
+.rhythm-card { max-width: 420px; margin: 12px auto; text-align: center; padding: 18px; }
+.rhythm-board { display: grid; grid-template-columns: 1fr; gap: 18px; width: 160px; margin: 18px auto; }
+.rhythm-pad { width: 140px; height: 140px; border-radius: 999px; border: 4px solid rgba(0,0,0,0.12); box-shadow: 0 8px 18px rgba(2,6,23,0.12); }
+.rhythm-pad.red { background: #ef4444; }
+.rhythm-pad.green { background: #22c55e; }
+.rhythm-pad.cyan { background: #34d4ff; }
+.rhythm-pad.on { filter: brightness(1.35); transform: scale(1.03); box-shadow: 0 10px 22px rgba(2,6,23,0.18); }
+
+@media (min-width: 720px) {
+  /* Center the pads horizontally on desktop in a single row */
+  .rhythm-board { grid-template-columns: 1fr 1fr 1fr; width: 560px; display:flex; gap:24px; justify-content:center; }
+  .rhythm-pad { width: 160px; height: 160px; }
+}
+
 /* ===== Global: controlar scroll y hacer elementos responsivos ===== */
 /* Permitimos scroll global por defecto; páginas concretas pueden cambiarlo */
 html, body, #root {

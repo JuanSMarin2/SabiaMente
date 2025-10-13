@@ -12,6 +12,7 @@ import CreateAccount from "./pages/CreateAccount";
 import RecoverAccount from "./pages/RecoverAccount";
 import VerifyCode from "./pages/VerifyCode";
 import Pairs from "./pages/Pairs"; 
+import Rhythm from "./pages/rhythm";
 import Streak from "./pages/Streak";
 
 export default function App() {
@@ -28,7 +29,8 @@ export default function App() {
       <Route path="/verify" element={<AppLayout><VerifyCode /></AppLayout>} />
 
    
-      <Route path="/pairs" element={<Pairs />} />
+  <Route path="/pairs" element={<Pairs />} />
+  <Route path="/rhythm" element={<Rhythm />} />
 
   
       <Route path="/streak" element={<AppLayout><Streak /></AppLayout>} />

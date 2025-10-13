@@ -1,11 +1,19 @@
 // src/pages/MainMenu.jsx
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useStore } from "../store";
 
 export default function MainMenu() {
   const img = (p) => import.meta.env.BASE_URL + "img/" + p;
   const { getUserName, streak, points } = useStore();
+
+  const navigate = useNavigate();
+
+  const startRandomGame = () => {
+    // 50/50 choose between pairs and rhythm
+    const pick = Math.random() < 0.5 ? "/pairs" : "/rhythm";
+    navigate(pick);
+  };
 
   return (
     <div className="page">
@@ -30,10 +38,10 @@ export default function MainMenu() {
         </section>
 
         <section className="mm-actions">
-          <Link className="mm-btn mm-btn--play" to="/pairs">
+          <button className="mm-btn mm-btn--play" onClick={startRandomGame}>
             <div className="mm-ico">♪</div>
             <span>Jugar</span>
-          </Link>
+          </button>
 
           <Link className="mm-btn mm-btn--tips" to="/advice">
             <div className="mm-ico">i</div>
