@@ -13,11 +13,10 @@
 }
 
 * { box-sizing: border-box; }
-html, body, #root { height: 100%; }
+html, body, #root { height: 100vh; overflow: auto; /* permitir scroll global cuando haga falta */ }
 
 body {
   margin: 0;
-html, body, #root { height: 100vh; overflow: auto; /* permitir scroll global cuando haga falta */ }
   color: var(--text);
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -700,11 +699,82 @@ body{ background:var(--bg); color:var(--text); }
 .adv-arrow { font-size:42px; color:#0ea5b7; }
 .adv-btn { margin-top:10px; max-width:240px; }
 
-/* ===== Global: evitar scroll y hacer elementos responsivos ===== */
-/* Evitar scroll en toda la app; los elementos deben adaptarse al viewport */
+/* Advice page styles (cards + video) -------------------------------------- */
+.adv-advice { max-width: 880px; margin: 12px auto; padding: 20px; }
+.advice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  justify-items: center;
+  margin: 8px 0 18px;
+}
+.advice-card {
+  width: min(42vw, 220px);
+  aspect-ratio: 1 / 1;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 18px rgba(2,6,23,0.12);
+  display: grid;
+  place-items: center;
+  background: #fff;
+}
+.advice-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.advice-video { width: min(84vw, 560px); margin: 8px auto 18px; }
+.advice-video video {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+}
+
+/* Advice page special layout: don't vertically center — stack from top */
+.adv-page { display: block; padding-top: 12px; }
+.adv-advice { margin-top: 6px; }
+
+/* Video wrapper with play overlay centered (visual only) */
+.video-wrap { position: relative; display: block; }
+.video-wrap video { display: block; border-radius: 6px; }
+.play-overlay {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  width: 84px;
+  height: 84px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 36px;
+  pointer-events: none; /* purely decorative */
+  box-shadow: 0 6px 14px rgba(2,6,23,0.25);
+}
+
+/* Ensure the Continue button is visible on desktop by limiting the max-height
+   behavior and allowing normal scrolling; add spacing at bottom. */
+.adv-btn { margin-top: 20px; }
+.adv-advice { padding-bottom: 48px; }
+
+/* Small screens: stack vertically and slightly reduce sizes */
+@media (max-width: 420px) {
+  .advice-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .advice-card { width: min(42vw, 160px); border-radius: 12px; }
+  .adv-title { font-size: clamp(20px, 6vw, 28px); }
+}
+
+@media (max-width: 360px) {
+  .advice-grid { grid-template-columns: 1fr 1fr; }
+  .advice-card { width: min(44vw, 150px); }
+}
+
+/* ===== Global: controlar scroll y hacer elementos responsivos ===== */
+/* Permitimos scroll global por defecto; páginas concretas pueden cambiarlo */
 html, body, #root {
   height: 100vh;
-  overflow: hidden; /* impide scroll global */
+  overflow: auto; /* permitir scroll global */
 }
 
 /* Hacer que los cards y contenedores reduzcan su ancho usando vw */
@@ -821,3 +891,16 @@ img, .mm-avatar, .logo, .sb-logo {
    space) and a max-width for large screens. */
 .pairs-board { margin-top: 6px; max-width: 900px; } 
   
+/* Strong override for the Advice page: undo the centered .page layout so
+   content stacks from the top and the Continue button is reachable on
+   larger screens. Place this after the generic .page rules so it wins. */
+.page.adv-page {
+  display: block !important;
+  min-height: auto !important;
+  height: auto !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  overflow: visible !important;
+  padding: 12px 18px 48px !important;
+}
+.adv-advice { margin: 8px auto; }
