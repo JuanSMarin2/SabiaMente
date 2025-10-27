@@ -41,6 +41,7 @@ export default function Rhythm() {
   const [playerIndex, setPlayerIndex] = useState(0);
   const [locked, setLocked] = useState(false);
   const [highlight, setHighlight] = useState(null);
+  const [intro, setIntro] = useState(true); // show intro panel first
 
   const good = useAudio(soundBase + "goodSound.wav");
   const bad = useAudio(soundBase + "badSound.wav");
@@ -49,8 +50,11 @@ export default function Rhythm() {
   const timeoutRef = useRef(null);
 
   useEffect(() => {
-    // Start the game after 1s with an initial random sequence
-    timeoutRef.current = setTimeout(() => startNewRound(), 1000);
+    // Show intro for ~5s, then hide and start the game
+    timeoutRef.current = setTimeout(() => {
+      setIntro(false);
+      startNewRound();
+    }, 5000);
     return () => clearTimeout(timeoutRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -85,7 +89,7 @@ export default function Rhythm() {
   };
 
   const onPlayerClick = (id) => {
-    if (locked) return;
+  if (locked || intro) return;
     // highlight briefly
     setHighlight(id);
     if (sequence[playerIndex] === id) {
@@ -120,12 +124,22 @@ export default function Rhythm() {
   };
 
   return (
-    <div className="page">
+    <div className="page rhythm-page">
       <main className="rhythm-card">
         <h2 className="adv-title">Ritmo</h2>
         <p className="adv-sub">Repite la secuencia</p>
 
-        <div className="rhythm-board">
+        {intro && (
+          <div className="rhythm-intro" role="status" aria-live="polite">
+            <h3 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>¿Cómo jugar?</h3>
+            <p style={{ margin: '6px 0 0' }}>
+              Observa la secuencia de colores y luego repítela en el mismo orden.
+              La ronda aumenta en longitud cada vez que aciertas.
+            </p>
+          </div>
+        )}
+
+        <div className="rhythm-board" aria-hidden={intro ? 'true' : 'false'}>
           {COLORS.map((c, i) => (
             <button
               key={c}
@@ -136,7 +150,7 @@ export default function Rhythm() {
           ))}
         </div>
 
-        <div style={{ marginTop: 12 }}>
+        <div className="rhythm-actions">
           <button className="primaryBtn" onClick={() => nav('/main')}>Volver</button>
         </div>
       </main>

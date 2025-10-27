@@ -664,16 +664,14 @@ body{ background:var(--bg); color:var(--text); }
   padding-top: var(--appbar-h, 72px);
   /* ocupar el alto restante; permitir scroll cuando haga falta */
   height: calc(100vh - var(--appbar-h, 72px));
-  overflow: auto; /* permitir scroll interno en páginas con contenido mayor */
+  overflow: hidden; /* por defecto SIN scroll en páginas normales */
 }
-/* El appbar propio del juego debe ocupar el mismo ancho que el tablero */
-.pairs-appbar { width: min(96vw, 680px); }
+/* (el appbar del juego se define más abajo como full-width) */
 
 /* Cada carta mantiene 3:4 y se adapta al ancho de la celda */
 .pair-card { aspect-ratio: 3 / 4; }
 
-/* El tablero deja espacio bajo el appbar fijo (header global + appbar local) */
-.pairs-board { padding-top: calc(var(--appbar-h, 72px) + 8px + 56px); }
+/* El tablero no necesita padding adicional; el header sticky ocupa su lugar */
 
 
 .page {
@@ -700,28 +698,24 @@ body{ background:var(--bg); color:var(--text); }
 .adv-btn { margin-top:10px; max-width:240px; }
 
 /* Advice page styles (cards + video) -------------------------------------- */
-.adv-advice { max-width: 880px; margin: 12px auto; padding: 20px; }
+.adv-advice { max-width: 880px; margin: 12px auto; padding: 20px; --adv-gap: 18px; }
 .advice-grid {
-  /* Span the full viewport like the video container so the inner column
-     can align with the video edges. */
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: 0;
+  /* Contenedor centrado sin usar 100vw para evitar scroll horizontal */
+  width: min(92vw, 760px);
+  margin: 8px auto 18px;
   display: flex;
   justify-content: center;
-  margin-top: 8px;
-  margin-bottom: 18px;
 }
 .advice-grid-inner {
-  width: min(84vw, 560px); /* match video width */
+  width: 100%; /* igual al ancho del contenedor padre */
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  align-items: start;
-  justify-items: start; /* left-align items inside each cell */
+  gap: var(--adv-gap);
+  align-items: stretch;
+  justify-items: stretch; /* stretch items so outer edges align with container edges */
 }
 .advice-card {
-  width: min(42vw, 220px);
+  width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 14px;
   overflow: hidden;
@@ -733,23 +727,22 @@ body{ background:var(--bg); color:var(--text); }
 .advice-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 .advice-video {
-  /* Make the container span the viewport so we can center the video
-     horizontally relative to the screen, even if the page content is
-     constrained in a centered column. */
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: 0;
-  margin-top: 8px;
-  margin-bottom: 18px;
+  width: min(92vw, 760px);
+  margin: 8px auto 18px;
   display: flex;
   justify-content: center;
 }
+.advice-video .video-wrap {
+  width: calc((100% - var(--adv-gap)) / 2); /* same as one advice card */
+  aspect-ratio: 1 / 1; /* square like the image cards */
+}
 .advice-video video {
-  width: min(84vw, 560px);
-  height: auto;
+  width: 100%;
+  height: 100%;
   display: block;
   border: 2px solid #ddd;
   border-radius: 8px;
+  object-fit: cover; /* fill the square like the images */
 }
 
 /* Advice page special layout: don't vertically center — stack from top */
@@ -781,21 +774,45 @@ body{ background:var(--bg); color:var(--text); }
 .adv-btn { margin-top: 20px; }
 .adv-advice { padding-bottom: 48px; }
 
-/* Small screens: stack vertically and slightly reduce sizes */
+/* Small screens: stack vertically and slightly reduce gaps (items always stretch) */
 @media (max-width: 420px) {
-  .advice-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-  .advice-card { width: min(42vw, 160px); border-radius: 12px; }
+  .adv-advice { --adv-gap: 12px; }
+  .advice-grid-inner { gap: 12px; }
+  .advice-card { width: 100%; border-radius: 12px; }
   .adv-title { font-size: clamp(20px, 6vw, 28px); }
 }
 
 @media (max-width: 360px) {
-  .advice-grid { grid-template-columns: 1fr 1fr; }
-  .advice-card { width: min(44vw, 150px); }
+  .adv-advice { --adv-gap: 10px; }
+  .advice-grid-inner { gap: 10px; }
+  .advice-card { width: 100%; }
 }
 
 /* Rhythm minigame styles */
-.rhythm-card { max-width: 420px; margin: 12px auto; text-align: center; padding: 18px; }
-.rhythm-board { display: grid; grid-template-columns: 1fr; gap: 18px; width: 160px; margin: 18px auto; }
+.rhythm-card { max-width: min(92vw, 720px); margin: 12px auto; text-align: center; padding: 18px; }
+/* Espaciado extra entre título, tablero y botón */
+.rhythm-card .adv-title { margin-bottom: 8px; }
+.rhythm-card .adv-sub { margin: 0 0 22px; }
+/* Intro panel */
+.rhythm-intro {
+  margin: 4px auto 8px;
+  padding: 12px 14px;
+  max-width: 520px;
+  border: 1px solid rgba(2,6,23,0.12);
+  border-radius: 12px;
+  background: #ffffff;
+  color: #0b1220;
+  box-shadow: 0 8px 18px rgba(2,6,23,0.08);
+}
+:root[data-theme="dark"] .rhythm-intro {
+  background: #0b1220;
+  color: #e5e7eb;
+  border-color: rgba(255,255,255,0.12);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+}
+/* Mobile-first: vertical stack, centrado */
+.rhythm-board { display: flex; flex-wrap: nowrap; flex-direction: column; align-items: center; gap: 18px; margin: 26px auto; justify-content: center; }
+.rhythm-actions { margin-top: 22px; }
 .rhythm-pad { width: 140px; height: 140px; border-radius: 999px; border: 4px solid rgba(0,0,0,0.12); box-shadow: 0 8px 18px rgba(2,6,23,0.12); }
 .rhythm-pad.red { background: #ef4444; }
 .rhythm-pad.green { background: #22c55e; }
@@ -804,22 +821,33 @@ body{ background:var(--bg); color:var(--text); }
 
 @media (min-width: 720px) {
   /* Center the pads horizontally on desktop in a single row */
-  .rhythm-board { grid-template-columns: 1fr 1fr 1fr; width: 560px; display:flex; gap:24px; justify-content:center; }
+  .rhythm-card .adv-sub { margin-bottom: 26px; }
+  .rhythm-board { flex-direction: row; gap: 28px; justify-content: center; align-items: center; margin: 32px auto; }
+  .rhythm-actions { margin-top: 28px; }
   .rhythm-pad { width: 160px; height: 160px; }
 }
 
-/* ===== Global: controlar scroll y hacer elementos responsivos ===== */
-/* Permitimos scroll global por defecto; páginas concretas pueden cambiarlo */
+/* ===== Global: sin scroll por defecto (excepto páginas permitidas) ===== */
 html, body, #root {
   height: 100vh;
-  overflow: auto; /* permitir scroll global */
+  overflow: hidden; /* sin scroll global */
 }
+
+/* Páginas con scroll habilitado */
+.page.adv-page { height: calc(100vh - var(--appbar-h, 72px)); overflow: auto; }
+.page.rhythm-page { height: calc(100vh - var(--appbar-h, 72px)); overflow: auto; }
+.pairs-page { height: 100vh; overflow: auto; }
 
 /* Hacer que los cards y contenedores reduzcan su ancho usando vw */
 .card, .mm-card, .adv-card {
   width: 100%;
   max-width: min(90vw, 360px);
   margin: 0 auto;
+}
+
+/* Advice wrapper should not be clamped by the generic .adv-card rule */
+.adv-card.adv-advice {
+  max-width: min(96vw, 940px);
 }
 
 /* Asegurar imágenes y avatares sean fluidos */
@@ -884,6 +912,8 @@ img, .mm-avatar, .logo, .sb-logo {
 /* En pantallas pequeñas asegurar gap más pequeño para evitar overflow */
 @media (max-width: 420px) {
   .pairs-grid { gap: 12px; }
+  /* Reducir un poco el tablero en móviles para que las fichas sean más pequeñas */
+  .pairs-board { max-width: 340px !important; }
 }
 
 /* Breakpoints para ajustar número de columnas y tamaño de cartas */
@@ -906,39 +936,78 @@ img, .mm-avatar, .logo, .sb-logo {
   .pairs-grid { grid-template-columns: repeat(4, 1fr); }
 }
 
-/* Pairs appbar (sticky) --------------------------------------------------
-   Use sticky so the appbar is in-flow and pushes the board down instead of
-   overlaying the top row of cards. This keeps the layout consistent across
-   viewports and prevents the appbar from covering content. */
+/* Móviles muy pequeños: aún más compacto */
+@media (max-width: 360px) {
+  .pairs-grid { gap: 10px; }
+  .pairs-board { max-width: 320px !important; }
+}
+
+/* Pairs appbar (sticky, full-width solid bar) --------------------------- */
 .pairs-appbar {
   position: sticky;
-  top: calc(var(--appbar-h, 72px) + 8px);
+  top: 0; /* header del minijuego pegado al borde superior */
+  left: 0;
+  right: 0;
   z-index: 1200;
-  width: min(92vw, 380px);
-  margin: 8px auto;
-  pointer-events: none; /* wrapper doesn't capture clicks; inner card does */
+  width: 100%;
+  margin: 0;
+  background: #ffffff; /* claro */
+  color: #0b1220;      /* texto oscuro en claro */
+  box-shadow: 0 2px 10px rgba(2,6,23,0.12);
 }
-.pairs-appbar > div {
-  pointer-events: auto;
+:root[data-theme="dark"] .pairs-appbar {
+  background: #181f2e; /* oscuro */
+  color: #ffffff;      /* texto claro en oscuro */
+  box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+}
+.pairs-appbar .time-chip { background: rgba(0,0,0,0.05); }
+:root[data-theme="dark"] .pairs-appbar .time-chip { background: rgba(255,255,255,0.10); }
+.pairs-appbar-inner {
   height: 56px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
 }
 
 /* The board keeps a small margin-top (the sticky appbar occupies layout
    space) and a max-width for large screens. */
 .pairs-board { margin-top: 6px; max-width: 900px; } 
   
-/* Strong override for the Advice page: undo the centered .page layout so
-   content stacks from the top and the Continue button is reachable on
-   larger screens. Place this after the generic .page rules so it wins. */
-.page.adv-page {
-  display: block !important;
-  min-height: auto !important;
-  height: auto !important;
-  align-items: stretch !important;
-  justify-content: flex-start !important;
-  overflow: visible !important;
-  padding: 12px 18px 48px !important;
-}
+/* Advice page spacing without breaking its scrolling */
+.page.adv-page { padding: 12px 18px 48px; }
 .adv-advice { margin: 8px auto; }
+
+/* ===== Desktop: MainMenu botones grandes y separados ===== */
+@media (min-width: 1000px) {
+  /* Ensures the main menu container widens so buttons can sit symmetrically */
+  .mm-card { max-width: min(92vw, 1100px); }
+
+  .mm-actions {
+    display: flex;
+    width: 100%;
+    margin: 24px auto 0;
+    justify-content: space-between; /* symmetric spacing to container edges */
+    align-items: stretch;
+    gap: 40px;
+  }
+  .mm-btn {
+    width: clamp(320px, 32vw, 440px);
+    height: clamp(140px, 22vh, 220px);
+    font-size: 18px;
+  }
+  .mm-btn .mm-ico { font-size: 32px; }
+  .mm-btn span { font-size: 18px; }
+
+  /* MainMenu: larger image and texts */
+  .mm-hello { margin: 18px 0 22px; }
+  .mm-hello h2 { font-size: clamp(32px, 3vw, 44px); }
+  .mm-hello p { font-size: clamp(18px, 1.6vw, 24px); }
+  .mm-avatar { width: 180px; height: 180px; }
+  .mm-row img { width: 28px; height: 28px; }
+  .mm-row .mm-num { font-size: clamp(16px, 1.2vw, 20px); }
+
+  /* Advice: make video and grid larger on desktop and keep centered */
+  .advice-grid { width: min(92vw, 900px); }
+  .advice-video { width: min(92vw, 900px); }
+}

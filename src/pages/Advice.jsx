@@ -34,7 +34,7 @@ export default function Advice(){
         </div>
 
         <button className="primaryBtn adv-btn" onClick={()=>nav("/main")}>
-          Continuar
+          Volver
         </button>
       </main>
     </div>

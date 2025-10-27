@@ -44,11 +44,11 @@ export default function Pairs() {
   };
   useEffect(() => { resetGame(); }, []);
 
-  // Remove the global appbar padding while we're on this route so our local
-  // game appbar can align flush with the top without double spacing.
+  // Quita el padding-top global del layout mientras estamos en Pairs para que
+  // el header del minijuego quede pegado arriba del todo sin espacio vacío.
   useEffect(() => {
-    document.body.classList.add("no-global-appbar-gap");
-    return () => document.body.classList.remove("no-global-appbar-gap");
+    document.body.classList.add('no-global-appbar-gap');
+    return () => document.body.classList.remove('no-global-appbar-gap');
   }, []);
 
   // Timer
@@ -90,20 +90,13 @@ export default function Pairs() {
   };
 
   return (
-    <div className="min-h-dvh w-full flex flex-col items-center bg-[#f5f7fb] text-slate-900 dark:bg-[#181f2e] dark:text-slate-100">
-      {/* APP BAR propia (usa la clase pairs-appbar definida en styles.css) */}
+    <div className="pairs-page min-h-dvh w-full flex flex-col items-center bg-[#f5f7fb] text-slate-900 dark:bg-[#181f2e] dark:text-slate-100">
+      {/* APP BAR propia (barra sólida a todo lo ancho, sin botón volver) */}
       <div className="pairs-appbar">
-        <div className="m-3 rounded-2xl border border-black/10 shadow-[0_6px_16px_rgba(2,6,23,0.12)] bg-white px-3 py-2 flex items-center justify-between">
-          <button
-            onClick={() => navigate(-1)}
-            className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-violet-500 text-white active:translate-y-px shadow"
-            aria-label="Volver"
-          >
-            ←
-          </button>
+        <div className="pairs-appbar-inner">
           <div className="font-semibold text-[18px]">Parejas</div>
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-black/20">🕒</span>
+            <span className="inline-flex items-center justify-center w-10 h-10 rounded-full time-chip">🕒</span>
             <span className="text-2xl font-bold tabular-nums">{mmss(timeLeft)}</span>
           </div>
         </div>
@@ -141,10 +134,14 @@ export default function Pairs() {
         </div>
 
         {/* Acciones inferiores */}
-
         <p className="mt-4 text-center text-sm text-slate-600">
           Pares resueltos: <b>{matched.size / 2}</b> / {totalPairs} · Movs: <b>{moves}</b>
         </p>
+
+        {/* Botón Volver (estilo igual al de Rhythm) */}
+        <div style={{ marginTop: 12 }} className="flex justify-center">
+          <button className="primaryBtn" onClick={() => navigate('/main')}>Volver</button>
+        </div>
       </div>
     </div>
   );
