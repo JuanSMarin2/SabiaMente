@@ -14,6 +14,8 @@ import VerifyCode from "./pages/VerifyCode";
 import Pairs from "./pages/Pairs"; 
 import Rhythm from "./pages/rhythm";
 import Streak from "./pages/Streak";
+import ExplainPairs from "./pages/ExplainPairs";
+import ExplainRhythm from "./pages/ExplainRhythm";
 
 export default function App() {
   return (
@@ -26,7 +28,9 @@ export default function App() {
       <Route path="/about" element={<AppLayout><About /></AppLayout>} />
       <Route path="/create" element={<AppLayout><CreateAccount /></AppLayout>} />
       <Route path="/recover" element={<AppLayout><RecoverAccount /></AppLayout>} />
-      <Route path="/verify" element={<AppLayout><VerifyCode /></AppLayout>} />
+  <Route path="/verify" element={<AppLayout><VerifyCode /></AppLayout>} />
+  <Route path="/explain-pairs" element={<AppLayout><ExplainPairs /></AppLayout>} />
+  <Route path="/explain-rhythm" element={<AppLayout><ExplainRhythm /></AppLayout>} />
 
    
   <Route path="/pairs" element={<Pairs />} />

@@ -10,8 +10,8 @@ export default function MainMenu() {
   const navigate = useNavigate();
 
   const startRandomGame = () => {
-    // 50/50 choose between pairs and rhythm
-    const pick = Math.random() < 0.5 ? "/pairs" : "/rhythm";
+    // 50/50: explicación de Parejas o Ritmo
+    const pick = Math.random() < 0.5 ? "/explain-pairs" : "/explain-rhythm";
     navigate(pick);
   };
 

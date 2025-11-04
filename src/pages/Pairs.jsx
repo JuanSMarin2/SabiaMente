@@ -22,6 +22,18 @@ export default function Pairs() {
   const [moves, setMoves] = useState(0);
   const [timeLeft, setTimeLeft] = useState(5 * 60);
   const [locked, setLocked] = useState(false);
+  const [feedback, setFeedback] = useState(null); // 'good' | 'bad' | null
+  const feedbackLockRef = React.useRef(false);
+
+  const showFeedback = (type) => {
+    if (feedbackLockRef.current) return;
+    feedbackLockRef.current = true;
+    setFeedback(type);
+    setTimeout(() => {
+      setFeedback(null);
+      feedbackLockRef.current = false;
+    }, 820);
+  };
 
   const totalPairs = useMemo(() => EMOJIS.length, []);
 
@@ -82,6 +94,11 @@ export default function Pairs() {
           const mset = new Set(matched);
           mset.add(a); mset.add(b);
           setMatched(mset);
+          // feedback positivo por pareja encontrada
+          showFeedback('good');
+        } else {
+          // feedback negativo por error
+          showFeedback('bad');
         }
         setFlipped([]);
         setLocked(false);
@@ -140,9 +157,17 @@ export default function Pairs() {
 
         {/* Botón Volver (estilo igual al de Rhythm) */}
         <div style={{ marginTop: 12 }} className="flex justify-center">
-          <button className="primaryBtn" onClick={() => navigate('/main')}>Volver</button>
+          <button className="primaryBtn primaryBtn--lg" onClick={() => navigate('/main')}>Salir</button>
         </div>
       </div>
+      {feedback && (
+        <>
+          <div className={["flash-layer", feedback === 'good' ? 'flash-good' : 'flash-bad'].join(' ')} />
+          <div className="feedback-wrap">
+            <div className="feedback-card">{feedback === 'good' ? '¡Muy Bien!' : 'Upps'}</div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

@@ -81,6 +81,22 @@ body {
   transition: transform 0.06s ease, filter 0.15s ease, background 0.15s ease;
 }
 
+/* Botón principal grande */
+.primaryBtn.primaryBtn--lg {
+  max-width: 340px;
+  padding: 18px 22px;
+  font-size: 19px;
+  border-radius: 16px;
+}
+
+/* Variante de botón rojo para "Salir" */
+.primaryBtn.primaryBtn--danger {
+  background: #ef4444;
+}
+.primaryBtn.primaryBtn--danger:active {
+  background: #dc2626;
+}
+
 .primaryBtn:active {
   transform: translateY(1px);
   background: var(--primary-press);
@@ -698,6 +714,20 @@ body{ background:var(--bg); color:var(--text); }
 .adv-btn { margin-top:10px; max-width:240px; }
 
 /* Advice page styles (cards + video) -------------------------------------- */
+/* Explain pages: layout superior, texto grande y alineado a la izquierda */
+.explain-page { display: block; padding: 12px 18px; }
+.explain-card {
+  width: 100%;
+  max-width: min(92vw, 720px);
+  margin: 14px auto;
+  padding: 20px 22px;
+  text-align: left;
+}
+.explain-card .adv-title { text-align: center; font-size: clamp(32px, 7vw, 60px); margin: 0 0 14px; }
+.explain-card .adv-sub { font-size: clamp(22px, 4vw, 34px); margin: 0 0 18px; }
+.explain-list { margin: 10px 0 26px; padding-left: 20px; line-height: 1.6; }
+.explain-list li { margin: 8px 0; font-size: clamp(18px, 3.6vw, 24px); }
+.explain-actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: flex-start; margin-top: 40px; }
 .adv-advice { max-width: 880px; margin: 12px auto; padding: 20px; --adv-gap: 18px; }
 .advice-grid {
   /* Contenedor centrado sin usar 100vw para evitar scroll horizontal */
@@ -789,13 +819,14 @@ body{ background:var(--bg); color:var(--text); }
 }
 
 /* Rhythm minigame styles */
-.rhythm-card { max-width: min(92vw, 720px); margin: 12px auto; text-align: center; padding: 18px; }
-/* Espaciado extra entre título, tablero y botón */
-.rhythm-card .adv-title { margin-bottom: 8px; }
-.rhythm-card .adv-sub { margin: 0 0 22px; }
+ .rhythm-card { max-width: min(92vw, 720px); margin: 12px auto; text-align: center; padding: 18px; display:flex; flex-direction:column; align-items:center; min-height:100%; justify-content:space-between; }
+.rhythm-top { width:100%; max-width:720px; }
+/* Título y texto mucho más grandes y con más aire */
+.rhythm-card .adv-title { margin-bottom: 12px; font-size: clamp(28px, 6vw, 48px); }
+.rhythm-card .adv-sub { margin: 0 0 28px; font-size: clamp(18px, 3.6vw, 28px); }
 /* Intro panel */
 .rhythm-intro {
-  margin: 4px auto 8px;
+  margin: 12px auto 16px;
   padding: 12px 14px;
   max-width: 520px;
   border: 1px solid rgba(2,6,23,0.12);
@@ -810,21 +841,126 @@ body{ background:var(--bg); color:var(--text); }
   border-color: rgba(255,255,255,0.12);
   box-shadow: 0 8px 18px rgba(0,0,0,0.35);
 }
+/* Tipografía más grande dentro del panel intro */
+.rhythm-intro-title { margin: 0; font-size: clamp(20px, 3.6vw, 26px); font-weight: 800; }
+.rhythm-intro-text { margin: 8px 0 0; font-size: clamp(16px, 3vw, 20px); }
 /* Mobile-first: vertical stack, centrado */
-.rhythm-board { display: flex; flex-wrap: nowrap; flex-direction: column; align-items: center; gap: 18px; margin: 26px auto; justify-content: center; }
-.rhythm-actions { margin-top: 22px; }
-.rhythm-pad { width: 140px; height: 140px; border-radius: 999px; border: 4px solid rgba(0,0,0,0.12); box-shadow: 0 8px 18px rgba(2,6,23,0.12); }
-.rhythm-pad.red { background: #ef4444; }
-.rhythm-pad.green { background: #22c55e; }
-.rhythm-pad.cyan { background: #34d4ff; }
+.rhythm-board { display: flex; flex-wrap: nowrap; flex-direction: column; align-items: center; gap: 22px; margin: 36px auto; justify-content: center; }
+.rhythm-actions { margin-top: 28px; }
+.rhythm-board { overflow: visible; }
+.rhythm-pad { position: relative; overflow: visible; width: 140px; height: 140px; border-radius: 999px; border: 4px solid rgba(0,0,0,0.12); box-shadow: 0 8px 18px rgba(2,6,23,0.12); }
+.rhythm-pad.red { background: #ef4444; --pad-color:#ef4444; }
+.rhythm-pad.green { background: #22c55e; --pad-color:#22c55e; }
+.rhythm-pad.cyan { background: #34d4ff; --pad-color:#34d4ff; }
 .rhythm-pad.on { filter: brightness(1.35); transform: scale(1.03); box-shadow: 0 10px 22px rgba(2,6,23,0.18); }
+/* Big translucent halo on active pad */
+.rhythm-pad.on::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% + 80px);
+  height: calc(100% + 80px);
+  border-radius: 999px;
+  background: var(--pad-color, rgba(0,0,0,0.2));
+  opacity: 0.26;
+  pointer-events: none;
+}
+.no-halo .rhythm-pad.on::after { display: none !important; }
 
 @media (min-width: 720px) {
   /* Center the pads horizontally on desktop in a single row */
-  .rhythm-card .adv-sub { margin-bottom: 26px; }
-  .rhythm-board { flex-direction: row; gap: 28px; justify-content: center; align-items: center; margin: 32px auto; }
-  .rhythm-actions { margin-top: 28px; }
+  .rhythm-card .adv-title { font-size: clamp(36px, 4.8vw, 56px); }
+  .rhythm-card .adv-sub { margin-bottom: 36px; font-size: clamp(20px, 2.6vw, 30px); }
+  .rhythm-board { flex-direction: row; gap: 36px; justify-content: center; align-items: center; margin: 48px auto; }
+  .rhythm-actions { margin-top: 40px; }
   .rhythm-pad { width: 160px; height: 160px; }
+}
+
+/* ==== Generic feedback flash + panel (for both games) ==== */
+.flash-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  animation: flashInOut 650ms ease;
+  z-index: 2000;
+}
+.flash-good { background: rgba(34, 197, 94, 0.35); }
+.flash-bad  { background: rgba(239, 68, 68, 0.35); }
+/* ==== Generic feedback flash + panel (for both games) ==== */
+/* Single-shot flash: appear at target opacity, then fade out once. */
+.flash-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  pointer-events: none;
+  opacity: 0.35;             /* start visible to feel like a single flash */
+  animation: flashOne 820ms ease-out forwards; /* fade out only, no pulse */
+}
+.flash-good { background: rgba(34, 197, 94, 0.35); }
+.flash-bad  { background: rgba(239, 68, 68, 0.35); }
+
+@keyframes flashOne {
+  0% { opacity: 0.35; }
+  100% { opacity: 0; }
+}
+
+.feedback-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 1210;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.feedback-card {
+  background: #fff;
+  color: #111827;
+  font-weight: 800;
+  font-size: clamp(20px, 4.6vw, 34px);
+  padding: 14px 20px;
+  border-radius: 14px;
+  box-shadow: 0 10px 22px rgba(2,6,23,0.18);
+  animation: fadeAway 900ms ease-out forwards;
+}
+:root[data-theme="dark"] .feedback-card {
+  background: #0b1220;
+  color: #e5e7eb;
+}
+@keyframes fadeAway {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-2px); }
+}
+.feedback-wrap {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: 2100;
+  animation: fadeAway 900ms ease forwards;
+}
+.feedback-card {
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 22px;
+  background: #ffffff;
+  color: #0b1220;
+  border: 1px solid rgba(2,6,23,0.12);
+  box-shadow: 0 10px 24px rgba(2,6,23,0.18);
+}
+:root[data-theme="dark"] .feedback-card {
+  background: #0b1220;
+  color: #e5e7eb;
+  border-color: rgba(255,255,255,0.12);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.45);
+}
+@keyframes fadeAway {
+  0% { opacity: 0; transform: translateY(6px); }
+  15% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-6px); }
 }
 
 /* ===== Global: sin scroll por defecto (excepto páginas permitidas) ===== */

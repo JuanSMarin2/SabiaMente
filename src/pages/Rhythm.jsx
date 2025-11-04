@@ -41,7 +41,24 @@ export default function Rhythm() {
   const [playerIndex, setPlayerIndex] = useState(0);
   const [locked, setLocked] = useState(false);
   const [highlight, setHighlight] = useState(null);
-  const [intro, setIntro] = useState(true); // show intro panel first
+  const [feedback, setFeedback] = useState(null); // 'good' | 'bad' | null
+  const feedbackLockRef = useRef(false);
+  const [suppressHalo, setSuppressHalo] = useState(false); // evita halo al reiniciar tras error
+
+  const showFeedback = (type) => {
+    if (feedbackLockRef.current) return; // evita doble parpadeo
+    feedbackLockRef.current = true;
+    setFeedback(type);
+    // suprimir halo grande durante y un poco después del flash para no parecer segundo flash
+    setSuppressHalo(true);
+    setTimeout(() => {
+      setFeedback(null);
+    }, 820);
+    setTimeout(() => {
+      setSuppressHalo(false);
+      feedbackLockRef.current = false;
+    }, 1300);
+  };
 
   const good = useAudio(soundBase + "goodSound.wav");
   const bad = useAudio(soundBase + "badSound.wav");
@@ -50,11 +67,10 @@ export default function Rhythm() {
   const timeoutRef = useRef(null);
 
   useEffect(() => {
-    // Show intro for ~5s, then hide and start the game
+    // Start the game shortly after mount
     timeoutRef.current = setTimeout(() => {
-      setIntro(false);
       startNewRound();
-    }, 5000);
+    }, 600);
     return () => clearTimeout(timeoutRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -89,7 +105,7 @@ export default function Rhythm() {
   };
 
   const onPlayerClick = (id) => {
-  if (locked || intro) return;
+  if (locked) return;
     // highlight briefly
     setHighlight(id);
     if (sequence[playerIndex] === id) {
@@ -101,6 +117,8 @@ export default function Rhythm() {
         // Completed sequence correctly -> play sequence-complete sound,
         // wait 500ms and either start next round or finish the game after 5 rounds.
         sequenceSound();
+        // Show success flash/panel briefly
+  showFeedback('good');
         const rounds = sequence.length; // current rounds completed
         setLocked(true);
         setTimeout(() => {
@@ -117,29 +135,24 @@ export default function Rhythm() {
     } else {
       // incorrect
       bad();
-      // replay entire sequence after short delay
+  showFeedback('bad');
+      // replay sequence after the feedback finishes to avoid double flash perception
       setLocked(true);
-      setTimeout(() => playSequence(sequence), 700);
+      setTimeout(() => {
+        playSequence(sequence);
+      }, 1100);
     }
   };
 
   return (
     <div className="page rhythm-page">
       <main className="rhythm-card">
-        <h2 className="adv-title">Ritmo</h2>
-        <p className="adv-sub">Repite la secuencia</p>
+        <div className="rhythm-top">
+          <h2 className="adv-title">Ritmo</h2>
+          <p className="adv-sub">Repite la secuencia</p>
+        </div>
 
-        {intro && (
-          <div className="rhythm-intro" role="status" aria-live="polite">
-            <h3 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>¿Cómo jugar?</h3>
-            <p style={{ margin: '6px 0 0' }}>
-              Observa la secuencia de colores y luego repítela en el mismo orden.
-              La ronda aumenta en longitud cada vez que aciertas.
-            </p>
-          </div>
-        )}
-
-        <div className="rhythm-board" aria-hidden={intro ? 'true' : 'false'}>
+  <div className={["rhythm-board", suppressHalo ? "no-halo" : ""].join(" ")}>
           {COLORS.map((c, i) => (
             <button
               key={c}
@@ -151,8 +164,17 @@ export default function Rhythm() {
         </div>
 
         <div className="rhythm-actions">
-          <button className="primaryBtn" onClick={() => nav('/main')}>Volver</button>
+          <button className="primaryBtn primaryBtn--lg" onClick={() => nav('/main')}>Salir</button>
         </div>
+
+        {feedback && (
+          <>
+            <div className={["flash-layer", feedback === 'good' ? 'flash-good' : 'flash-bad'].join(' ')} />
+            <div className="feedback-wrap">
+              <div className="feedback-card">{feedback === 'good' ? '¡Muy Bien!' : 'Upps'}</div>
+            </div>
+          </>
+        )}
       </main>
     </div>
   );
